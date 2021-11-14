@@ -2,8 +2,7 @@ package main
 
 import (
 	"fmt"
-	//c "goProjetos/banco/contas"
-	c "goProjetos/banco/contas"
+	"goProjetos/banco/contas"
 )
 
 func somarNumeros(valor string, num ...int) int {
@@ -15,15 +14,26 @@ func somarNumeros(valor string, num ...int) int {
 	return resultado
 }
 
+func PagarBoleto(conta VerificarConta, valorBoleto float64) {
+	conta.Sacar(valorBoleto)
+}
+
+type VerificarConta interface {
+	Sacar(valor float64) string
+}
+
 func main() {
 
-	contaDaSilvia := c.ContaCorrente{Titular: "Silvia", Saldo: 300}
-	contaDoGustavo := c.ContaCorrente{Titular: "Gustavo", Saldo: 100}
+	contaDoDenis := contas.ContaPoupanca{}
+	contaDoDenis.Depositar(100)
+	PagarBoleto(&contaDoDenis, 60)
 
-	status := contaDoGustavo.Trasnferir(-200, &contaDaSilvia)
+	fmt.Println(contaDoDenis.ObterSaldo())
 
-	fmt.Println(status)
-	fmt.Println(contaDaSilvia)
-	fmt.Println(contaDoGustavo)
+	contaDaLuisa := contas.ContaCorrente{}
+	contaDaLuisa.Depositar(500)
+	PagarBoleto(&contaDaLuisa, 1000)
+
+	fmt.Println(contaDaLuisa.ObterSaldo())
 
 }
